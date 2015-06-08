@@ -2,29 +2,24 @@ require 'spec_helper'
 
 describe "StaticPages" do
 
-  describe "Home page" do
-	it "should have the content 'Obuchi App'" do
-      visit '/static_pages/home'
-      expect(page).to have_content('Obuchi App')
-    end
+  subject { page }
 
-    it "should have the title 'Home'" do
-      visit '/static_pages/home'
-      expect(page).to have_title("Obuchi App | Home")
-    end
+  describe "Home page" do
+    before { visit root_path }
+
+    it { should have_content('Obuchi App') }
+    it { should have_title(full_title('')) }
+    it { should_not have_title('| Home') }
   end
 
 
-  describe "About page" do
-    it "should have the content 'About Us'" do
-      visit '/static_pages/about'
-      expect(page).to have_content('About Us')
-    end
 
-    it "should have the title 'About Us'" do
-      visit '/static_pages/about'
-      expect(page).to have_title("Obuchi App | About Us")
-    end
+
+  describe "About page" do
+    before { visit about_path }
+
+    it { should have_content('About') }
+    it { should have_title(full_title('About Us')) }
   end
 
 end

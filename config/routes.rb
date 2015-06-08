@@ -1,6 +1,9 @@
 ObuchiApp::Application.routes.draw do
-  get "static_pages/home"
-  get "static_pages/about"
+  get "users/new"
+
+  root 'static_pages#home'
+  match '/signup', to: 'users#new', via: 'get'
+  match '/about', to: 'static_pages#about', via: 'get'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
