@@ -9,4 +9,20 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
+
+require 'securerandom'
+
+def secure_token
+  token_file = Rails.root.join('.secret')
+  if File.exist?(token_file)
+    # Use the existing token.
+    File.read(token_file).chomp
+  else
+    # Generate a new token and store it in token_file.
+    token = SecureRandom.hex(64)
+    File.write(token_file, token)
+    token
+  end
+end
+
 ObuchiApp::Application.config.secret_key_base = 'f50baebf4172decf8461f7ef9e5724814789a1ed0fbfd4990a8154430432d0b9af6449e9f80dc4953feb9c4bac9ddc2de6ae81f8e9f0ba87b0ce2772ec9b9a85'
