@@ -23,39 +23,80 @@ describe "User Pages" do
 
 	describe "signup" do
 	# ユーザー登録のとき 
-    	before { visit signup_path }
+    before { visit signup_path }
 		let(:submit) { "Create my account" }
 
-    	describe "with invalid information" do
-    	# 登録が無効だったら
-      		it "should not create a user" do
-        		expect { click_button submit }.not_to change(User, :count)
-      		end
-    	end
-
-    	describe "with valid information" do
-    	# 登録が有効だったら
-      	before do
-        	fill_in "Name",         with: "Example User"
-        	fill_in "Email",        with: "user@example.com"
-        	fill_in "Password",     with: "foobar"
-        	fill_in "Confirmation", with: "foobar"
-      	end
-      	it "should create a user" do
-        # ユーザーを作成するときは
-          expect { click_button submit }.to change(User, :count).by(1)
-      	end
-        describe "after saving the user" do
-        # ユーザーを保存した後は
-          before { click_button submit }
-          let(:user) { User.find_by(email: 'user@example.com') }
-
-          it { should have_link('Sign out') }
-          it { should have_title(user.name) }
-          it { should have_selector('div.alert.alert-success', text: 'ようこそ') }
-        end
-    	end
-
+  	describe "with invalid information" do
+  	# 登録が無効だったら
+  		it "should not create a user" do
+    		expect { click_button submit }.not_to change(User, :count)
+  		end
   	end
+
+    describe "with valid information" do
+    # 登録が有効だったら
+    	before do
+      	fill_in "Name",         with: "Example User"
+      	fill_in "Email",        with: "user@example.com"
+      	fill_in "Password",     with: "foobar"
+      	fill_in "Confirmation", with: "foobar"
+    	end
+    	it "should create a user" do
+      # ユーザーを作成するときは
+        expect { click_button submit }.to change(User, :count).by(1)
+      end
+      describe "after saving the user" do
+      # ユーザーを保存した後は
+        before { click_button submit }
+        let(:user) { User.find_by(email: 'user@example.com') }
+
+        it { should have_link('Sign out') }
+        it { should have_title(user.name) }
+        it { should have_selector('div.alert.alert-success', text: 'ようこそ') }
+      end
+    end
+	end
+
+  describe "edit" do
+  # 編集
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      sign_in user
+      visit edit_user_path(user)
+    end
+
+    describe "page" do
+    # ページについて
+      it { should have_content("Update your profile") }
+      it { should have_title("Edit user") }
+      it { should have_link('change', href: 'http://gravatar.com/emails') }
+    end
+
+    describe "with invalid information" do
+    # 無効だった場合 
+      before { click_button "Save changes" }
+
+      it { should have_content('error') }
+    end
+
+    describe "with valid information" do
+    # 有効だったとき
+      let(:new_name)  { "New Name" }
+      let(:new_email) { "new@example.com" }
+      before do
+        fill_in "Name",             with: new_name
+        fill_in "Email",            with: new_email
+        fill_in "Password",         with: user.password
+        fill_in "Confirm Password", with: user.password
+        click_button "Save changes"
+      end
+
+      it { should have_title(new_name) }
+      it { should have_selector('div.alert.alert-success') }
+      it { should have_link('Sign out', href: signout_path) }
+      specify { expect(user.reload.name).to  eq new_name }
+      specify { expect(user.reload.email).to eq new_email }
+    end
+  end
 
 end
