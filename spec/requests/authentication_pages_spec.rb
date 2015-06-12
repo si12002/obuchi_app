@@ -90,15 +90,29 @@ describe "Authentication" do
       before { sign_in user, no_capybara: true }
 
       describe "submitting a GET request to the Users#edit action" do
-      # Users#editアクションへのGETリクエストを提出する
+      # Users#editアクションへのGETリクエストを出す
         before { get edit_user_path(wrong_user) }
         specify { expect(response.body).not_to match(full_title('Edit user')) }
         specify { expect(response).to redirect_to(root_url) }
       end
 
       describe "submitting a PATCH request to the Users#update action" do
-      # Users#updateアクションへのPATCHリクエストを提出する
+      # Users#updateアクションへのPATCHリクエストを出す
         before { patch user_path(wrong_user) }
+        specify { expect(response).to redirect_to(root_path) }
+      end
+    end
+
+    describe "as non-admin user" do
+    # 管理者ユーザーじゃない人
+      let(:user) { FactoryGirl.create(:user) }
+      let(:non_admin) { FactoryGirl.create(:user) }
+
+      before { sign_in non_admin, no_capybara: true }
+
+      describe "submitting a DELETE request to the Users#destroy action" do
+      # Users#destroyアクションへDELETEリクエストを出す
+        before { delete user_path(user) }
         specify { expect(response).to redirect_to(root_path) }
       end
     end
