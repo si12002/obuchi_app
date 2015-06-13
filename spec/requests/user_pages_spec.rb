@@ -13,7 +13,7 @@ describe "User Pages" do
     end
 
     it { should have_title('All users') }
-    it { should have_content('All users') }
+    it { should have_content('ユーザー一覧') }
 
     describe "pagination" do
     # ページネーションのこと
@@ -30,7 +30,7 @@ describe "User Pages" do
 
     describe "delete links" do
     # リンクを消す
-      it { should_not have_link('delete') }
+      it { should_not have_link('削除') }
       describe "as an admin user" do
       # 管理者だったら
         let(:admin) { FactoryGirl.create(:admin) }
@@ -38,14 +38,14 @@ describe "User Pages" do
           sign_in admin
           visit users_path
         end
-        it { should have_link('delete', href: user_path(User.first)) }
+        it { should have_link('削除', href: user_path(User.first)) }
         it "should be able to delete another user" do
         # 別のユーザーを消せるようにする
           expect do
-            click_link('delete', match: :first)
+            click_link('削除', match: :first)
           end.to change(User, :count).by(-1)
         end
-        it { should_not have_link('delete', href: user_path(admin)) }
+        it { should_not have_link('削除', href: user_path(admin)) }
       end
     end
 
@@ -70,7 +70,7 @@ describe "User Pages" do
 	# ユーザー登録ページ
 		before { visit signup_path }
 
-		it { should have_content('Sign up') }
+		it { should have_content('ユーザー登録') }
 		it { should have_title(full_title('Sign up')) }
 	end
 
@@ -103,7 +103,7 @@ describe "User Pages" do
         before { click_button submit }
         let(:user) { User.find_by(email: 'user@example.com') }
 
-        it { should have_link('Sign out') }
+        it { should have_link('サインアウト') }
         it { should have_title(user.name) }
         it { should have_selector('div.alert.alert-success', text: 'ようこそ') }
       end
@@ -146,7 +146,7 @@ describe "User Pages" do
 
       it { should have_title(new_name) }
       it { should have_selector('div.alert.alert-success') }
-      it { should have_link('Sign out', href: signout_path) }
+      it { should have_link('サインアウト', href: signout_path) }
       specify { expect(user.reload.name).to  eq new_name }
       specify { expect(user.reload.email).to eq new_email }
     end

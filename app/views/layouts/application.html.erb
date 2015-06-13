@@ -1,23 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
   <head>
-    <title>
-      <%= full_title(yield(:title)) %>
-    </title>
+    <meta charset="UTF-8">
+    <title><%= full_title(yield(:title)) %></title>
     <%= stylesheet_link_tag "application", media: "all", "data-turbolinks-track" => true %>
     <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
     <%= csrf_meta_tags %>
     <%= render 'layouts/shim' %>
+    
+    <meta name="viewport" content="width=device-width, initital-scale=1">
+    <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css" />
+    <script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
   </head>
 
   <body>
-    <%= render 'layouts/header' %>
-    <% flash.each do |key, value| %>
-        <div class="alert alert-<%= key %>"><%= value %></div>
-    <% end %>
-    <%= yield %>
+  <div data-role="page">
+      <%= render 'layouts/nav_panel' %>
+      <%= render 'layouts/header' %>
+      <div data-role="content">
+        <% flash.each do |key, value| %>
+          <div class="alert alert-<%= key %>"><%= value %></div>
+        <% end %>
+        <%= yield %>
+      </div>
+    
+  <!--
     <%= render 'layouts/footer' %>
     <%= debug(params) if Rails.env.development? %>
+  -->
+    </div>
   </body>
 </html>
 
