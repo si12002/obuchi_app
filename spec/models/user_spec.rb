@@ -16,6 +16,7 @@ describe User do
   it { should respond_to(:authenticate) }
   it { should respond_to(:admin) }
   it { should respond_to(:documents) }
+  it { should respond_to(:feed) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -151,6 +152,17 @@ describe User do
         expect(Document.where(id: document.id)).to be_empty
       end
     end
+
+    describe "status" do
+      let(:unfollowed_post) do
+        FactoryGirl.create(:document, user: FactoryGirl.create(:user))
+      end
+
+      its(:feed) { should include(newer_document) }
+      its(:feed) { should include(older_document) }
+      its(:feed) { should_not include(unfollowed_post) }
+    end
+
   end
 
 end

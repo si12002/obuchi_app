@@ -1,5 +1,16 @@
-<h1>尾駁小学校アプリ</h1>
-<p>尾駁小学校のアプリへようこそ</p>
-<div class = "ui-btn">
-<%= link_to "ユーザー登録", signup_path %>
-</div>
+<% if signed_in? %>
+  <section>
+    <%= render 'shared/user_info' %>
+  </section>
+  <section>
+    <%= render 'shared/document_form' %>
+  </section>
+  <h3>ドキュメントフィード</h3>
+      <%= render 'shared/feed' %>
+<% else %>
+  <h1>尾駁小学校アプリ</h1>
+  <p>尾駁小学校のアプリへようこそ</p>
+  <!--<div class = "ui-btn">-->
+  <%= link_to "ユーザー登録", signup_path, class: "ui-btn" %>
+  <!--</div>-->
+<% end %>
