@@ -1,7 +1,20 @@
 <%= form_for(@document) do |f| %>
   <%= render 'shared/error_messages', object: f.object %>
   <div class="field">
-    <%= f.text_area :content, placeholder: "Compose new document..." %>
+	<%= f.text_area :content, placeholder: "Compose new document..." %>
+
+	<%= f.label "緯度" %>
+	<%= f.text_field :lat %>
+
+	<%= f.label "経度" %>
+	<%= f.text_field :lng %>
+
+	<%= f.label "日付" %>
+	<%= f.text_field :date %>
+
+	<%= f.label "天気" %>
+	<%= f.text_field :weather %>
+
   </div>
   <%= f.submit "Post", class: "ui-btn" %>
 <% end %>
