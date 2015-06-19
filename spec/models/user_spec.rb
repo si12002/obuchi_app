@@ -15,6 +15,8 @@ describe User do
   it { should respond_to(:remember_token) }
   it { should respond_to(:authenticate) }
   it { should respond_to(:admin) }
+  it { should respond_to(:documents) }
+  it { should respond_to(:feed) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -124,6 +126,43 @@ describe User do
   # remeber_tokenについて
     before { @user.save }
     its(:remember_token) { should_not be_blank }
+  end
+
+  describe "document associations" do
+  # ユーザーのdocumentの順序のテスト
+    before { @user.save }
+    let!(:older_document) do
+      FactoryGirl.create(:document, user: @user, created_at: 1.day.ago)
+    end
+    let!(:newer_document) do
+      FactoryGirl.create(:document, user: @user, created_at: 1.hour.ago)
+    end
+
+    it "should have the right document in the right order" do
+    # 正しい順番の中に正しいdocumentがあったら
+      expect(@user.documents.to_a).to eq [newer_document, older_document]
+    end
+
+    it "should destroy associated documents" do
+    # 関連したdocumentを消す
+      documents = @user.documents.to_a
+      @user.destroy
+      expect(documents).not_to be_empty
+      documents.each do |document|
+        expect(Document.where(id: document.id)).to be_empty
+      end
+    end
+
+    describe "status" do
+      let(:unfollowed_post) do
+        FactoryGirl.create(:document, user: FactoryGirl.create(:user))
+      end
+
+      its(:feed) { should include(newer_document) }
+      its(:feed) { should include(older_document) }
+      its(:feed) { should_not include(unfollowed_post) }
+    end
+
   end
 
 end

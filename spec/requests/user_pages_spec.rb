@@ -59,12 +59,20 @@ describe "User Pages" do
 
 	describe "profile page" do
 	# ユーザーのプロフィールページ
-    	let(:user) { FactoryGirl.create(:user) }
-    	before { visit user_path(user) }
+    let(:user) { FactoryGirl.create(:user) }
+    let!(:d1) { FactoryGirl.create(:document, user: user, content: "Foo") }
+    let!(:d2) { FactoryGirl.create(:document, user: user, content: "Bar") }
+    before { visit user_path(user) }
 
-    	it { should have_content(user.name) }
-    	it { should have_title(user.name) }
-  	end
+    it { should have_content(user.name) }
+    it { should have_title(user.name) }
+
+    describe "document" do
+      it { should have_content(d1.content) }
+      it { should have_content(d2.content) }
+      it { should have_content(user.documents.count) }
+    end
+  end
 
 	describe "signup page" do
 	# ユーザー登録ページ

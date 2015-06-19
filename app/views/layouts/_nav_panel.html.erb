@@ -1,12 +1,12 @@
 <div data-role="panel" id="nav_panel" data-position="left" data-display="overlay">
   <ul data-role="listview">
-    <li><%= link_to "ホーム", root_path %></li>
     <% if signed_in? %>
       <li><%= link_to "マイページ", current_user %></li>
       <li><%= link_to "ユーザー一覧", users_path %></li>
       <li><%= link_to "編集", edit_user_path(current_user) %></li>
       <li><%= link_to "サインアウト", signout_path, method: "delete" %></li>
     <% else %>
+      <li><%= link_to "ホーム", root_path %></li>
       <li><%= link_to "このアプリについて", about_path %></li>
       <li><%= link_to "サインイン", signin_path %></li>
     <% end %>
