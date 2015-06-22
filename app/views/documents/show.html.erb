@@ -1,2 +1,6 @@
 <% provide(:title, "詳細") %>
-<h1>Show</h1>
+<p><%= @document.date %>  -  <%= time_ago_in_words(@document.created_at) %> ago<br>
+<%= @document.weather %><br>
+	<%= @document.content %><br>
+	( <%= @document.lat %>, <%= @document.lng %> )
+</p>
