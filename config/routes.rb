@@ -1,7 +1,7 @@
 ObuchiApp::Application.routes.draw do
   resources :users
   resources :sessions, only: [:new, :create, :destroy]
-  resources :documents, only: [:index, :create, :destroy]
+  resources :documents, only: [:index, :show, :create, :destroy]
 
   root 'static_pages#home'
   match '/signup', to: 'users#new', via: 'get'
