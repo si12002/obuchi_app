@@ -2,6 +2,13 @@ class DocumentsController < ApplicationController
   before_action :signed_in_user, only: [:create, :destroy]
   before_action :correct_user,   only: :destroy
 
+  def index
+    @documents = Document.all
+  end
+
+  def show
+  end
+
   def create
   	@document = current_user.documents.build(document_params)
     if @document.save
@@ -20,7 +27,7 @@ class DocumentsController < ApplicationController
 
   private
     def document_params
-      params.require(:document).permit(:content)
+      params.require(:document).permit(:content, :lat, :lng, :date, :weather)
     end
 
     def correct_user
