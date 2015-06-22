@@ -5,8 +5,8 @@
 </h1>
 <% if @user.documents.any? %>
     <h3>Documents (<%= @user.documents.count %>)</h3>
-    <ol class="documents">
+    <ul class="documents">
     	<%= render @documents %>
-    </ol>
+    </ul>
     <%= will_paginate @documents %>
 <% end %>
