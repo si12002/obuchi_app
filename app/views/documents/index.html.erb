@@ -1,5 +1,8 @@
 <% provide(:title, "マップ") %>
 
+<%= link_to "場所を追加する" , new_document_path, class: "ui-btn" %> 
+<br>
+
 <div data-role = "listview">
 <% @documents.each do |document| %>
 	<li><!--<strong><%= document.user.name %></strong><br>

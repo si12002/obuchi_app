@@ -10,11 +10,15 @@ class DocumentsController < ApplicationController
     @document = Document.find(params[:id])
   end
 
+  def new
+    @document = Document.new
+  end
+
   def create
   	@document = current_user.documents.build(document_params)
     if @document.save
       flash[:success] = "Document created!"
-      redirect_to root_url
+      redirect_to documents_path
     else
       @feed_items = []
       render 'static_pages/home'
@@ -23,7 +27,7 @@ class DocumentsController < ApplicationController
 
   def destroy
     @document.destroy
-    redirect_to root_url
+    redirect_to documents_path
   end
 
   private
