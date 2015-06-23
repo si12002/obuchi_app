@@ -1,13 +1,12 @@
 <% provide(:title, "マップ") %>
 
+<div data-role = "listview">
 <% @documents.each do |document| %>
-	<li><%= link_to gravatar_for(document.user), document.user %>
-    	<%= link_to document.user.name, document.user %><br>
-		<%= document.date %> , <%= document.weather %><br>
+	<li><!--<strong><%= document.user.name %></strong><br>
 		<%= document.content %><br>
-		( <%= document.lat %>, <%= document.lng %> ) -  <%= time_ago_in_words(document.created_at) %>ago
-		<% if current_user?(document.user) %>
-    		<%= link_to "delete", document, method: :delete, data: { confirm: "You sure?" }, title: document.content %>
-  		<% end %>
+		<%= document.date %> - <%= time_ago_in_words(document.created_at) %>ago-->
+		<%= link_to document.content , document %> 
 	</li>
 <% end %>
+</div>
+

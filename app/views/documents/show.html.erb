@@ -1,6 +1,11 @@
 <% provide(:title, "詳細") %>
-<p><%= @document.date %>  -  <%= time_ago_in_words(@document.created_at) %> ago<br>
-<%= @document.weather %><br>
+<p>
+	<%= link_to gravatar_for(@document.user), @document.user %>
+    		<%= link_to @document.user.name, @document.user %><br>
+	<%= @document.date %>  -  <%= time_ago_in_words(@document.created_at) %> ago<br>
 	<%= @document.content %><br>
-	( <%= @document.lat %>, <%= @document.lng %> )
+	<%= @document.weather %> ( <%= @document.lat %>, <%= @document.lng %> )
+	<% if current_user?(@document.user) %>
+    		<%= link_to "削除", @document, method: :delete, data: { confirm: "削除しますか？" }, title: @document.content, class: "ui-btn" %>
+  		<% end %>
 </p>
