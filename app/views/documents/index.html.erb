@@ -5,10 +5,12 @@
 
 <div data-role = "listview">
 <% @documents.each do |document| %>
-	<li><!--<strong><%= document.user.name %></strong><br>
+	<li><strong><%= document.user.name %></strong><br>
 		<%= document.content %><br>
-		<%= document.date %> - <%= time_ago_in_words(document.created_at) %>ago-->
-		<%= link_to document.content , document %> 
+		<%= document.date %> - <%= time_ago_in_words(document.created_at) %>ago
+		<div class = "ui-btn-right">
+			<%= link_to "詳細" , document, class: "ui-btn" %>
+		</div>
 	</li>
 <% end %>
 </div>

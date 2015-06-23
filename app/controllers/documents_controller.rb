@@ -16,18 +16,24 @@ class DocumentsController < ApplicationController
 
   def create
   	@document = current_user.documents.build(document_params)
-    if @document.save
-      flash[:success] = "Document created!"
-      redirect_to documents_path
-    else
-      @feed_items = []
-      render 'static_pages/home'
+    respond_to do |format|
+      if @document.save
+        format.html { redirect_to documents_path, notice: 'Document was successfully created.' }
+        format.json { render :index, status: :created, location: @document }
+      else
+        format.html { render :new }
+        format.json { render json: @document.errors, status: :unprocessable_entity }
+      end
     end
+
   end
 
   def destroy
     @document.destroy
-    redirect_to documents_path
+    respond_to do |format|
+      format.html { redirect_to documents_url, notice: 'Document was successfully destroyed.' }
+      format.json { head :no_content }
+    end
   end
 
   private
